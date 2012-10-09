@@ -13,18 +13,18 @@ public class Piece {
 	}
 	
 	public boolean isRound(){
-		return (value & ROUND_FLAG) != 0;
+		return ((value & ROUND_FLAG) != 0);
 	}
 	
 	public boolean isRed(){
-		return (value & RED_FLAG) != 0;
+		return ((value & RED_FLAG) != 0);
 	}
 	
 	public boolean isLarge(){
-		return (value & LARGE_FLAG) != 0;
+		return ((value & LARGE_FLAG) != 0);
 	}
 	public boolean isSmooth(){
-		return (value & SMOOTH_FLAG) != 0;
+		return ((value & SMOOTH_FLAG) != 0);
 	}
 	
 	/** Returns whether this piece possesses the given feature.  A synonym for their individual getters which is easier to loop over.*/

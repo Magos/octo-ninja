@@ -15,23 +15,38 @@ public class BoardTest {
 
 	@Test
 	public void testPlacePiece() {
-		Board board = new Board();
-		Piece[] pieces = Piece.getPieceSet();
-		StringBuffer buf = new StringBuffer();
 		for(Piece.Feature feature : Piece.Feature.values()){
-			buf.append(feature.toString());
-			buf.append(" ");
-		}
-		System.out.println(buf.toString());
-		for (int i = 1; 0 < pieces.length; i+=1) {
-			buf.setLength(0);
-			for(Piece.Feature feature : Piece.Feature.values()){
-				buf.append(pieces[i].possessesFeature(feature));
-				buf.append(" ");
+			//Test horizontal and vertical rows in isolation.
+			for(int j = 1; j <= 4; j++){
+				Board horizontalsBoard = new Board();
+				Piece[] horizontalsPieces = Piece.getPieceSet();
+				Board verticalsBoard = new Board();
+				Piece[] verticalsPieces = Piece.getPieceSet();
+				for (int i = 1; i < 4; i++) {
+					Piece piece = getPiece(horizontalsPieces, feature);
+					boolean result = horizontalsBoard.placePiece(piece, i, j);
+					assertFalse(result);
+					piece = getPiece(verticalsPieces, feature);
+					result = verticalsBoard.placePiece(piece, j, i);
+					assertFalse(result);
+					
+				}
+				Piece piece = getPiece(horizontalsPieces, feature);
+				boolean result = horizontalsBoard.placePiece(piece, 4, j);
+				assertTrue(result);
 			}
-			buf.append(pieces[i].toString());
-			System.out.println(buf.toString());
 		}
 	}
 
+	private Piece getPiece(Piece[] pieces, Feature feature) {
+		Piece ret = null;
+		for (int i = 0; i < pieces.length; i++) {
+			if(pieces[i] != null && pieces[i].possessesFeature(feature)){
+				ret = pieces[i];
+				pieces[i] = null;
+				break;
+			}
+		}
+		return ret;
+	}
 }
