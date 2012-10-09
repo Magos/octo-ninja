@@ -1,5 +1,7 @@
 package octo_ninja.model;
 
+import octo_ninja.model.Piece.Feature;
+
 public class Board {
 	private Piece[][] board;
 
@@ -7,12 +9,56 @@ public class Board {
 		board = new Piece[4][4];
 	}
 
-	public void placePiece(Piece piece, int x, int y){
-		if(x < 1 || x > 4){return;}
-		if(y < 1 || y > 4){return;}
-		if(piece == null){return;}
-		if(board[x-1][y-1] != null){return;}
-		board[x-1][y-1] = piece;
+	/** Places a piece on the board and returns whether or not this move won the player the game. X and Y indexes are between 1 and 4 inclusive.*/
+	public boolean placePiece(Piece piece, int x, int y) throws IllegalStateException, IllegalArgumentException{
+		if(x < 1 || x > 4){throw new IllegalArgumentException("Illegal X argument.");}
+		if(y < 1 || y > 4){throw new IllegalArgumentException("Illegal Y argument.");}
+		if(piece == null){throw new IllegalArgumentException("Cannot place a null Piece on game board.");}
+		x--; y--;
+		if(board[x][y] != null){throw new IllegalStateException("Placing a piece on an occupied space.");}
+		board[x][y] = piece;
+		return checkVictory(piece, x, y);
+	}
+
+	private boolean checkVictory(Piece piece, int x, int y) {
+		int counter = 0;
+		//For every feature of the piece:
+		for(Piece.Feature feature : Piece.Feature.values()){
+			//Check horizontal for matches.
+			for(int i = 0; i < 4;i++){
+				counter += featureMatches(board[x][i],piece,feature);
+			}
+			if(counter == 4){return true;}
+			counter = 0;
+			//Check vertical for matches.
+			for(int i = 0; i < 4;i++){
+				counter += featureMatches(board[i][y],piece,feature);
+			}
+			if(counter == 4){return true;}
+			counter = 0;
+			//Check diagonal(s) if applicable.
+			if(x == y){
+				for(int i = 0; i < 4;i++){
+					counter += featureMatches(board[i][i],piece,feature);
+				}
+				if(counter == 4){return true;}
+				counter = 0;
+			}
+			if(y == 3 - x){
+				for(int i = 0; i < 4;i++){
+					counter += featureMatches(board[i][3-i],piece,feature);
+				}
+				if(counter == 4){return true;}
+				counter = 0;
+			}
+		}
+		
+		return false;
+	}
+
+	private int featureMatches(Piece piece, Piece piece2, Feature feature) {
+		if(piece == null || piece2 == null){return 0;} //Null pieces never match, even to other null pieces.
+		return (piece.possessesFeature(feature) == piece2.possessesFeature(feature) ? 1 : 0);
 	}
 
 	public boolean isWon(){
