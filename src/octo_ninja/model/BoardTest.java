@@ -16,7 +16,6 @@ public class BoardTest {
 	@Test
 	public void testPlacePiece() {
 		for(Piece.Feature feature : Piece.Feature.values()){
-			System.out.println("Testing " + feature.toString());
 			//Test horizontal and vertical rows in isolation.
 			for(int j = 1; j <= 4; j++){
 				Board horizontalsBoard = new Board();

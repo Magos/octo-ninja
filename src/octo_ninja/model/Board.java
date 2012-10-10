@@ -17,8 +17,6 @@ public class Board {
 		x--; y--;
 		if(board[x][y] != null){throw new IllegalStateException("Placing a piece on an occupied space.");}
 		board[x][y] = piece;
-		System.out.println("Adding " + piece.toString() + " to [" + x + ", " + y + "].");
-		System.out.println(toString());
 		return checkVictory(piece, x, y);
 	}
 
