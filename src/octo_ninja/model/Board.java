@@ -17,6 +17,8 @@ public class Board {
 		x--; y--;
 		if(board[x][y] != null){throw new IllegalStateException("Placing a piece on an occupied space.");}
 		board[x][y] = piece;
+		System.out.println("Adding " + piece.toString() + " to [" + x + ", " + y + "].");
+		System.out.println(toString());
 		return checkVictory(piece, x, y);
 	}
 
@@ -54,6 +56,19 @@ public class Board {
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuffer buf = new StringBuffer();
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board.length; j++) {
+				buf.append( (board[i][j] != null ? board[i][j].toString() : "____"));
+				buf.append(" ");
+			}
+			buf.append("\n");
+		}
+		return buf.toString();
 	}
 
 	private int featureMatches(Piece piece, Piece piece2, Feature feature) {
