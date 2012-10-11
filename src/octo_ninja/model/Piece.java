@@ -1,7 +1,6 @@
 package octo_ninja.model;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,11 +49,12 @@ public class Piece implements Cloneable{
 
 	/** Creates a complete set of game pieces. */
 	public static Set<Piece> getPieceSet(){
-		Piece[] ret = new Piece[16];
-		for (int i = 0; i < ret.length; i++) {
-			ret[i] = new Piece(i);
+		Set<Piece> ret = new HashSet<Piece>();
+		for (int i = 0; i < 16; i++) {
+			ret.add(new Piece(i));
 		}
-		return new HashSet<Piece>(Arrays.asList(ret));
+		System.out.println(ret.toString());
+		return ret;
 	}
 
 	/** The features a piece can either posess or not posess. */
