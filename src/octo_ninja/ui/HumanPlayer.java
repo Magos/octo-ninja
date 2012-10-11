@@ -1,6 +1,7 @@
 package octo_ninja.ui;
 
 import octo_ninja.model.Board;
+import octo_ninja.model.GameState;
 import octo_ninja.model.Move;
 import octo_ninja.model.Piece;
 import octo_ninja.model.Player;
@@ -9,15 +10,15 @@ import octo_ninja.model.Player;
 public class HumanPlayer implements Player {
 
 	@Override
-	public Move chooseMove(Board board, Piece[] pieces) {
+	public void gameEnded(boolean victory) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
-	public void gameEnded(boolean victory) {
-		// TODO Auto-generated method stub
+	public Move chooseMove(GameState state) {
 		
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
