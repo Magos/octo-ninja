@@ -53,7 +53,6 @@ public class Piece implements Cloneable{
 		for (int i = 0; i < 16; i++) {
 			ret.add(new Piece(i));
 		}
-		System.out.println(ret.toString());
 		return ret;
 	}
 
