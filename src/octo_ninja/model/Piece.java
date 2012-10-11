@@ -1,7 +1,12 @@
 package octo_ninja.model;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 /** A Quarto piece, with its 4 boolean attributes.*/
-public class Piece {
+public class Piece implements Cloneable{
 	private static final int ROUND_FLAG = 1;
 	private static final int RED_FLAG = 2;
 	private static final int LARGE_FLAG = 4;
@@ -44,12 +49,12 @@ public class Piece {
 	}
 
 	/** Creates a complete set of game pieces. */
-	public static Piece[] getPieceSet(){
+	public static Set<Piece> getPieceSet(){
 		Piece[] ret = new Piece[16];
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = new Piece(i);
 		}
-		return ret;
+		return new HashSet<Piece>(Arrays.asList(ret));
 	}
 
 	/** The features a piece can either posess or not posess. */
@@ -80,5 +85,9 @@ public class Piece {
 		buf.append(isSmooth() ? "*" : " ");
 		buf.append( round ? ")" : " ");
 		return buf.toString();
+	}
+	
+	public Piece clone(){
+		return new Piece(value);
 	}
 }

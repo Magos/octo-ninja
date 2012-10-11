@@ -5,6 +5,17 @@ import octo_ninja.model.Piece.Feature;
 public class Board {
 	private Piece[][] board;
 
+	public Board(Board original){
+		board = new Piece[4][4];
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				if(original.board[i][j] != null){
+					board[i][j] = original.board[i][j].clone();
+				}
+			}
+		}
+	}
+
 	public Board(){
 		board = new Piece[4][4];
 	}
@@ -52,10 +63,10 @@ public class Board {
 				counter = 0;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
@@ -75,66 +86,65 @@ public class Board {
 	}
 
 	public boolean isWon(){
-		int roundCounter, redCounter,smoothCounter,largeCounter;
-		//Check rows
-		for (int i = 0; i < board.length; i++) {
-			roundCounter = redCounter = smoothCounter = largeCounter = 0;
-			for (int j = 0; j < board[i].length; j++) {
-				if(board[i][j] != null){
-					Piece piece = board[i][j];
-					if(piece.isRound()){roundCounter++;}
-					if(piece.isRed()){redCounter++;}
-					if(piece.isSmooth()){smoothCounter++;}
-					if(piece.isLarge()){largeCounter++;}
+		for(Feature feature : Feature.values()){
+
+			int truecounter, nonNullCounter;
+			//Check rows
+			for (int i = 0; i < board.length; i++) {
+				truecounter = nonNullCounter = 0;
+				for (int j = 0; j < board[i].length; j++) {
+					if(board[i][j] != null){
+						nonNullCounter++;
+						if(board[i][j].possessesFeature(feature)){
+							truecounter++;
+						}
+					}
+				}
+				if(nonNullCounter == 4 && (truecounter == 4 || truecounter == 0)){
+					return true;
 				}
 			}
-			if(roundCounter==4 || redCounter == 4 || smoothCounter == 4 || largeCounter == 4){
-				return true;
-			}
-		}
-		//Check columns
-		for (int j = 0; j < board.length; j++) {
-			roundCounter = redCounter = smoothCounter = largeCounter = 0;
-			for (int i = 0; i < board[j].length; i++) {
-				if(board[i][j] != null){
-					Piece piece = board[i][j];
-					if(piece.isRound()){roundCounter++;}
-					if(piece.isRed()){redCounter++;}
-					if(piece.isSmooth()){smoothCounter++;}
-					if(piece.isLarge()){largeCounter++;}
+			//Check columns
+			for (int j = 0; j < board.length; j++) {
+				truecounter = nonNullCounter = 0;
+				for (int i = 0; i < board[j].length; i++) {
+					if(board[i][j] != null){
+						nonNullCounter++;
+						if(board[i][j].possessesFeature(feature)){
+							truecounter++;
+						}
+					}
+				}
+				if(nonNullCounter == 4 && (truecounter == 4 || truecounter == 0)){
+					return true;
 				}
 			}
-			if(roundCounter==4 || redCounter == 4 || smoothCounter == 4 || largeCounter == 4){
+			//Check diagonals
+			truecounter = nonNullCounter = 0;
+			for (int i = 0; i < board.length; i++) {
+				if(board[i][i] != null){
+					nonNullCounter++;
+					if(board[i][i].possessesFeature(feature)){
+						truecounter++;
+					}
+				}
+			}
+			if(nonNullCounter == 4 && (truecounter == 4 || truecounter == 0)){
 				return true;
 			}
-		}
-		//Check diagonals
-		roundCounter = redCounter = smoothCounter = largeCounter = 0;
-		for (int i = 0; i < board.length; i++) {
-			if(board[i][i] != null){
-				Piece piece = board[i][i];
-				if(piece.isRound()){roundCounter++;}
-				if(piece.isRed()){redCounter++;}
-				if(piece.isSmooth()){smoothCounter++;}
-				if(piece.isLarge()){largeCounter++;}
+
+			truecounter = nonNullCounter = 0;
+			for (int i = 0; i < board.length; i++) {
+				if(board[i][3-i] != null){
+					nonNullCounter++;
+					if(board[i][3-i].possessesFeature(feature)){
+						truecounter++;
+					}
+				}
 			}
-		}
-		if(roundCounter==4 || redCounter == 4 || smoothCounter == 4 || largeCounter == 4){
-			return true;
-		}
-		
-		roundCounter = redCounter = smoothCounter = largeCounter = 0;
-		for (int i = 0; i < board.length; i++) {
-			if(board[i][board.length-i] != null){
-				Piece piece = board[i][board.length - i];
-				if(piece.isRound()){roundCounter++;}
-				if(piece.isRed()){redCounter++;}
-				if(piece.isSmooth()){smoothCounter++;}
-				if(piece.isLarge()){largeCounter++;}
+			if(nonNullCounter == 4 && (truecounter == 4 || truecounter == 0)){
+				return true;
 			}
-		}
-		if(roundCounter==4 || redCounter == 4 || smoothCounter == 4 || largeCounter == 4){
-			return true;
 		}
 		return false;
 	}
