@@ -86,7 +86,30 @@ public class Piece implements Cloneable{
 		return buf.toString();
 	}
 	
+	public static Piece PieceFromString(String s){
+		s = s.replaceAll(" ", "");
+		int value = 0;
+		if(s.startsWith("(") && s.endsWith(")")) 	value += ROUND_FLAG;
+		if(s.toUpperCase().contains("R")) 			value += RED_FLAG;
+		if(s.equals(s.toUpperCase())) 				value += LARGE_FLAG;
+		if(s.length() > 1 && s.contains("*")) 		value += SMOOTH_FLAG;
+		return new Piece(value);
+	}
+	
 	public Piece clone(){
 		return new Piece(value);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Piece){
+			return this.value == ((Piece) obj).value;
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return value;
 	}
 }

@@ -4,10 +4,10 @@ import octo_ninja.model.Board;
 import octo_ninja.model.GameState;
 import octo_ninja.model.Move;
 import octo_ninja.model.Piece;
-import octo_ninja.model.Player;
+import octo_ninja.model.IPlayer;
 
 /** A Player implementation that presents the progress of play on STDOUT and requests moves over STDIN, to be chosen by a (presumed) human. */
-public class HumanPlayer implements Player {
+public class HumanPlayer implements IPlayer {
 
 	@Override
 	public void gameEnded(boolean victory) {
