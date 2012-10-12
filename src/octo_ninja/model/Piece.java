@@ -60,7 +60,7 @@ public class Piece implements Cloneable{
 		return ret;
 	}
 
-	/** The features a piece can either posess or not posess. */
+	/** The features a piece can either possess or not possess. */
 	enum Feature{
 		ROUND,
 		RED,
