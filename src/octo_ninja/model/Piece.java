@@ -3,6 +3,8 @@ package octo_ninja.model;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** A Quarto piece, with its 4 boolean attributes.*/
 public class Piece implements Cloneable{
@@ -10,6 +12,8 @@ public class Piece implements Cloneable{
 	private static final int RED_FLAG = 2;
 	private static final int LARGE_FLAG = 4;
 	private static final int SMOOTH_FLAG = 8;
+	private static final Pattern PATTERN = Pattern.compile("[bBrR()*]{0,4}"); //Only legal chars, legal length. No structuring checks here.. 
+	
 	private int value;
 
 	private Piece(int value){
@@ -87,7 +91,13 @@ public class Piece implements Cloneable{
 	}
 	
 	public static Piece PieceFromString(String s){
+		if(s == null){
+			return null;
+		}
 		s = s.replaceAll(" ", "");
+		if( !PATTERN.matcher(s).matches()){
+			return null;
+		}
 		int value = 0;
 		if(s.startsWith("(") && s.endsWith(")")) 	value += ROUND_FLAG;
 		if(s.toUpperCase().contains("R")) 			value += RED_FLAG;
