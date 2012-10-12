@@ -27,7 +27,8 @@ public abstract class AbstractPlayer implements IPlayer {
 
 		Move move = chooseMove(state);
 		Piece piece = move.getChosenPiece();
-		state = applyMove(move,state);
+		pieces.remove(piece);
+		state = new GameState(board,piece,null,pieces);
 		System.out.println(piece.toString());
 
 

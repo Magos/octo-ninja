@@ -148,4 +148,9 @@ public class Board {
 		}
 		return false;
 	}
+
+	public boolean isOccupied(int x, int y) {
+		if(x < 1 || x > 4 || y < 1 || y > 4) throw new IllegalArgumentException("Coordinates are between 1 and 4 inclusive.");
+		return board[x-1][y-1] != null;
+	}
 }
