@@ -1,26 +1,22 @@
 package octo_ninja.player;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import octo_ninja.model.Board;
 import octo_ninja.model.GameState;
-import octo_ninja.model.IPlayer;
 import octo_ninja.model.Move;
 import octo_ninja.model.Piece;
+import octo_ninja.model.Player;
 
-/**An infrastructure for using a Player as a process which communicates its moves over STDIN/STDOUT. */
-public abstract class AbstractPlayer implements IPlayer {
+/**An infrastructure for using a Player as a process which communicates its moves over STDIN/STDOUT. Intended for tournament use. */
+public abstract class AbstractPlayer implements Player {
 	private static final Pattern COORDINATES_PATTERN = Pattern.compile("[1234] [1234]");
-	private static boolean logging = false;
 
-	protected void runGame(boolean logging) throws IOException{
-		AbstractPlayer.logging = logging;
+	protected void runGame() throws IOException{
 		
 		Board board = new Board();
 		Set<Piece> pieces = Piece.getPieceSet();
@@ -82,9 +78,6 @@ public abstract class AbstractPlayer implements IPlayer {
 
 	private String readLine(BufferedReader reader) throws IOException {
 		String ret = reader.readLine();
-		if(logging){
-			new PrintWriter(new FileOutputStream("AbstractPlayer" + hashCode() + ".txt")).append(ret).close();
-		}
 		return ret;
 	}
 
