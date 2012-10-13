@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.Set;
 
+import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.core.joran.spi.JoranException;
+
 import octo_ninja.model.GameState;
 import octo_ninja.model.Move;
 import octo_ninja.model.Piece;
@@ -15,7 +18,8 @@ public class RandomPlayer extends AbstractPlayer {
 		random = new Random();
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, JoranException {
+		new JoranConfigurator().doConfigure("D:/Biblioteker/Dokumenter/Eclipse/octo-ninja/src/logback.xml");
 		new RandomPlayer().runGame();
 	}
 

@@ -16,7 +16,7 @@
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-		<File>logFile.log</File>
+		<File>D:/Biblioteker/Dokumenter/Eclipse/octo-ninja/logFile.log</File>
 
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 
@@ -33,6 +33,7 @@
 	</appender>
 
 	<root level="TRACE">
+		<appender-ref ref="STDOUT"/>
 		<appender-ref ref="FILE" />
 	</root>
 

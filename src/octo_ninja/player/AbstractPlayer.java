@@ -33,8 +33,7 @@ public abstract class AbstractPlayer implements Player {
 			Piece piece = move.getChosenPiece();
 			pieces.remove(piece);
 			state = new GameState(board,piece,null,pieces);
-			System.out.println(piece.toString());
-			System.out.flush();
+			output(piece.toString());
 		}else{
 			Piece opponentsChoice = Piece.PieceFromString(first);
 			if(opponentsChoice == null){
@@ -49,8 +48,8 @@ public abstract class AbstractPlayer implements Player {
 			Move move = getOpponentMove(reader);
 			state = applyMove(move, state);
 			move = chooseMove(state);
-			System.out.println(move.getX() + " " + move.getY());
-			System.out.println(move.getChosenPiece().toString());
+			output(move.getX() + " " + move.getY());
+			output(move.getChosenPiece().toString());
 			state = applyMove(move, state);
 		}
 
@@ -86,6 +85,10 @@ public abstract class AbstractPlayer implements Player {
 		return ret;
 	}
 
+	private void output(String s){
+		logger.trace("Player {} output: {}",hashCode(),s);
+		System.out.println(s);
+	}
 
 
 }
