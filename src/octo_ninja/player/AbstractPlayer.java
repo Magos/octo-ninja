@@ -1,8 +1,10 @@
 package octo_ninja.player;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -14,30 +16,32 @@ import octo_ninja.model.Piece;
 
 /**An infrastructure for using a Player as a process which communicates its moves over STDIN/STDOUT. */
 public abstract class AbstractPlayer implements IPlayer {
-
 	private static final Pattern COORDINATES_PATTERN = Pattern.compile("[1234] [1234]");
+	private static boolean logging = false;
 
-	protected void runGame() throws IOException{
-
+	protected void runGame(boolean logging) throws IOException{
+		AbstractPlayer.logging = logging;
+		
 		Board board = new Board();
 		Set<Piece> pieces = Piece.getPieceSet();
 		GameState state = new GameState(board, null, null, pieces);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		
-		String first = reader.readLine();
+		String first = readLine(reader);
 		if(first.equals("Make first move.")){
 		Move move = chooseMove(state);
 		Piece piece = move.getChosenPiece();
 		pieces.remove(piece);
 		state = new GameState(board,piece,null,pieces);
 		System.out.println(piece.toString());
+		System.out.flush();
 		}else{
-			Piece oppnentsChoice = Piece.PieceFromString(first);
-			if(oppnentsChoice == null){
+			Piece opponentsChoice = Piece.PieceFromString(first);
+			if(opponentsChoice == null){
 				throw new RuntimeException("Opponent chose invalid piece.");
 			}
-			pieces.remove(oppnentsChoice);
-			state = new GameState(board, oppnentsChoice,this,pieces);
+			pieces.remove(opponentsChoice);
+			state = new GameState(board, opponentsChoice,this,pieces);
 		}
 
 
@@ -63,8 +67,8 @@ public abstract class AbstractPlayer implements IPlayer {
 	}
 
 	private Move getOpponentMove(BufferedReader reader) throws IOException {
-		String coordinatesLine = reader.readLine();
-		String pieceLine = reader.readLine();
+		String coordinatesLine = readLine(reader);
+		String pieceLine = readLine(reader);
 		int x = -1;
 		int y = -1;
 		if(COORDINATES_PATTERN.matcher(coordinatesLine).matches()){
@@ -74,6 +78,14 @@ public abstract class AbstractPlayer implements IPlayer {
 		}
 		Piece piece = Piece.PieceFromString(pieceLine);
 		return new Move(piece,x,y);
+	}
+
+	private String readLine(BufferedReader reader) throws IOException {
+		String ret = reader.readLine();
+		if(logging){
+			new PrintWriter(new FileOutputStream("AbstractPlayer" + hashCode() + ".txt")).append(ret).close();
+		}
+		return ret;
 	}
 
 	

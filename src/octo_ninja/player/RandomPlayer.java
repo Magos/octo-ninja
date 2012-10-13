@@ -16,7 +16,8 @@ public class RandomPlayer extends AbstractPlayer {
 	}
 
 	public static void main(String[] args) throws IOException {
-		new RandomPlayer().runGame();
+		boolean logging = (args[0] != null && args[0].equals("-l"));
+		new RandomPlayer().runGame(logging);
 	}
 
 	@Override
