@@ -1,7 +1,6 @@
 package octo_ninja.player;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 

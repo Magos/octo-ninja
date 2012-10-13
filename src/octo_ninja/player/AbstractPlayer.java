@@ -3,7 +3,6 @@ package octo_ninja.player;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -34,7 +33,7 @@ public abstract class AbstractPlayer implements IPlayer {
 
 
 		while(!board.isWon()){
-			move = getMove(reader);
+			move = getOpponentMove(reader);
 			state = applyMove(move, state);
 			move = chooseMove(state);
 			System.out.println(move.getX() + " " + move.getY());
@@ -54,7 +53,7 @@ public abstract class AbstractPlayer implements IPlayer {
 		return new GameState(board, move.getChosenPiece(), null, pieces);
 	}
 
-	private Move getMove(BufferedReader reader) throws IOException {
+	private Move getOpponentMove(BufferedReader reader) throws IOException {
 		String coordinatesLine = reader.readLine();
 		String pieceLine = reader.readLine();
 		int x = -1;
