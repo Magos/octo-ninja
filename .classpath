@@ -3,5 +3,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="/laughing-wight/lib/slf4j-1.7.0/slf4j-api-1.7.0.jar" sourcepath="/laughing-wight/lib/slf4j-1.7.0/slf4j-api-1.7.0-sources.jar"/>
+	<classpathentry kind="lib" path="/laughing-wight/lib/logback-1.0.7/logback-classic-1.0.7.jar" sourcepath="/laughing-wight/lib/logback-1.0.7/logback-classic-1.0.7-sources.jar"/>
+	<classpathentry kind="lib" path="/laughing-wight/lib/logback-1.0.7/logback-core-1.0.7.jar" sourcepath="/laughing-wight/lib/logback-1.0.7/logback-core-1.0.7-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
