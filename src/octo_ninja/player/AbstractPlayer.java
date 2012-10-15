@@ -45,10 +45,10 @@ public abstract class AbstractPlayer implements Player {
 			state = new GameState(board, opponentsChoice,this,pieces);
 		}
 
-		while(!board.isWon()){
+		while(true){
 			Move move = chooseMove(state);
 			output(move.getChosenPiece().toString());
-			output(move.getX() + " " + move.getY());
+			output((move.getX()-1) + " " + (move.getY()-1)); //Subtract 1 because tournament uses 0-indexed X/Y
 			state = applyMove(move, state);
 			move = getOpponentMove(reader);
 			state = applyMove(move, state);
@@ -72,8 +72,9 @@ public abstract class AbstractPlayer implements Player {
 		int x = -1;
 		int y = -1;
 		if(COORDINATES_PATTERN.matcher(coordinatesLine).matches()){
-			x = Integer.parseInt(coordinatesLine.substring(0,1));
-			y = Integer.parseInt(coordinatesLine.substring(2,3));
+			//The tournament uses 0-indexed coordinates, not 1-indexed ones.
+			x = Integer.parseInt(coordinatesLine.substring(0,1)) + 1;
+			y = Integer.parseInt(coordinatesLine.substring(2,3)) + 1;
 
 		}
 		Piece piece = Piece.PieceFromString(pieceLine);
