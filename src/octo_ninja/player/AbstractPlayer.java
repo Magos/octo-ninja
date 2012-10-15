@@ -34,6 +34,8 @@ public abstract class AbstractPlayer implements Player {
 			pieces.remove(piece);
 			state = new GameState(board,piece,null,pieces);
 			output(piece.toString());
+			move = getOpponentMove(reader);
+			state = applyMove(move, state);
 		}else{
 			Piece opponentsChoice = Piece.PieceFromString(first);
 			if(opponentsChoice == null){
@@ -43,13 +45,12 @@ public abstract class AbstractPlayer implements Player {
 			state = new GameState(board, opponentsChoice,this,pieces);
 		}
 
-
 		while(!board.isWon()){
-			Move move = getOpponentMove(reader);
-			state = applyMove(move, state);
-			move = chooseMove(state);
-			output(move.getX() + " " + move.getY());
+			Move move = chooseMove(state);
 			output(move.getChosenPiece().toString());
+			output(move.getX() + " " + move.getY());
+			state = applyMove(move, state);
+			move = getOpponentMove(reader);
 			state = applyMove(move, state);
 		}
 
@@ -66,8 +67,8 @@ public abstract class AbstractPlayer implements Player {
 	}
 
 	private Move getOpponentMove(BufferedReader reader) throws IOException {
-		String coordinatesLine = readLine(reader);
 		String pieceLine = readLine(reader);
+		String coordinatesLine = readLine(reader);
 		int x = -1;
 		int y = -1;
 		if(COORDINATES_PATTERN.matcher(coordinatesLine).matches()){
