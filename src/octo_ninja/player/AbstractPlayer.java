@@ -20,14 +20,19 @@ public abstract class AbstractPlayer implements Player {
 	private static final Pattern COORDINATES_PATTERN = Pattern.compile("[1234] [1234]");
 	private static Logger logger = LoggerFactory.getLogger(AbstractPlayer.class);
 
-	protected void runGame() throws IOException{
+	protected void runGame(){
 
 		Board board = new Board();
 		Set<Piece> pieces = Piece.getPieceSet();
 		GameState state = new GameState(board, null, null, pieces);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-		String first = readLine(reader);
+		String first = null;
+		try {
+			first = readLine(reader);
+		} catch (IOException e) {
+			logger.debug("IOException", e);
+		}
 		if(first.equalsIgnoreCase("Make first move.")){
 			Move move = chooseMove(state);
 			Piece piece = move.getChosenPiece();
@@ -62,13 +67,19 @@ public abstract class AbstractPlayer implements Player {
 		Board board = state.getBoard();
 		board.placePiece(placed, move.getX(), move.getY());
 		Set<Piece> pieces = state.getPieces();
-		pieces.remove(move.getChosenPiece());
+		pieces.remove(placed);
 		return new GameState(board, move.getChosenPiece(), null, pieces);
 	}
 
-	private Move getOpponentMove(BufferedReader reader) throws IOException {
-		String pieceLine = readLine(reader);
-		String coordinatesLine = readLine(reader);
+	private Move getOpponentMove(BufferedReader reader){
+		String pieceLine = null;
+		String coordinatesLine = null;
+		try{
+			pieceLine = readLine(reader);
+			coordinatesLine = readLine(reader);
+		}catch(IOException e){
+			logger.warn("IOException",e);
+		}
 		int x = -1;
 		int y = -1;
 		if(COORDINATES_PATTERN.matcher(coordinatesLine).matches()){
