@@ -17,14 +17,14 @@ import octo_ninja.model.Player;
 
 /**An infrastructure for using a Player as a process which communicates its moves over STDIN/STDOUT. Intended for tournament use. */
 public abstract class AbstractPlayer implements Player {
-	private static final Pattern COORDINATES_PATTERN = Pattern.compile("[1234] [1234]");
+	private static final Pattern COORDINATES_PATTERN = Pattern.compile("[0123] [0123]");
 	private static Logger logger = LoggerFactory.getLogger(AbstractPlayer.class);
 
 	protected void runGame(){
 
 		Board board = new Board();
-		Set<Piece> pieces = Piece.getPieceSet();
-		GameState state = new GameState(board, null, null, pieces);
+		Set<Piece> remainingPieces = Piece.getPieceSet();
+		GameState state = new GameState(board, null, null, remainingPieces);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 		String first = null;
@@ -36,8 +36,8 @@ public abstract class AbstractPlayer implements Player {
 		if(first.equalsIgnoreCase("Make first move.")){
 			Move move = chooseMove(state);
 			Piece piece = move.getChosenPiece();
-			pieces.remove(piece);
-			state = new GameState(board,piece,null,pieces);
+			remainingPieces.remove(piece);
+			state = new GameState(board,piece,null,remainingPieces);
 			output(piece.toString());
 			move = getOpponentMove(reader);
 			state = applyMove(move, state);
@@ -46,19 +46,35 @@ public abstract class AbstractPlayer implements Player {
 			if(opponentsChoice == null){
 				throw new RuntimeException("Opponent chose invalid piece.");
 			}
-			pieces.remove(opponentsChoice);
-			state = new GameState(board, opponentsChoice,this,pieces);
+			remainingPieces.remove(opponentsChoice);
+			state = new GameState(board, opponentsChoice,this,remainingPieces);
 		}
 
-		while(true){
+		while(!board.isWon()){
+			int hash = hashCode();
+			logger.trace("{} choosing move, state is {}.", hash, state);
 			Move move = chooseMove(state);
+			logger.trace("{} chose {}. Attempting to output.",hash, move);
 			output(move.getChosenPiece().toString());
 			output((move.getX()-1) + " " + (move.getY()-1)); //Subtract 1 because tournament uses 0-indexed X/Y
+			logger.trace("{} updating state, state is {}", hash,state);
 			state = applyMove(move, state);
+			logger.trace("{} trying to read opponent's move.",hash);
 			move = getOpponentMove(reader);
+			logger.trace("{} updating after opponent's move, state is {}.", hash, state);
 			state = applyMove(move, state);
+			logger.trace("{} finished updating after opponent's move, state is {}.", hash, state);
 		}
-
+		try {
+			String last = readLine(reader);
+			if(last != null && last.equals("Victory")){
+				gameEnded(true);
+			}else{
+				gameEnded(false);
+			}
+		} catch (IOException e) {
+			logger.warn("Could not read final game master message.",e);
+		}
 
 	}
 
@@ -67,7 +83,7 @@ public abstract class AbstractPlayer implements Player {
 		Board board = state.getBoard();
 		board.placePiece(placed, move.getX(), move.getY());
 		Set<Piece> pieces = state.getPieces();
-		pieces.remove(placed);
+		pieces.remove(move.getChosenPiece());
 		return new GameState(board, move.getChosenPiece(), null, pieces);
 	}
 

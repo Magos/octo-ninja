@@ -22,8 +22,8 @@ public class Board {
 
 	/** Places a piece on the board and returns whether or not this move won the player the game. X and Y indexes are between 1 and 4 inclusive.*/
 	public boolean placePiece(Piece piece, int x, int y) throws IllegalStateException, IllegalArgumentException{
-		if(x < 1 || x > 4){throw new IllegalArgumentException("Illegal X argument.");}
-		if(y < 1 || y > 4){throw new IllegalArgumentException("Illegal Y argument.");}
+		if(x < 1 || x > 4){throw new IllegalArgumentException("Illegal X argument :" + x);}
+		if(y < 1 || y > 4){throw new IllegalArgumentException("Illegal Y argument.:" + y);}
 		if(piece == null){throw new IllegalArgumentException("Cannot place a null Piece on game board.");}
 		x--; y--;
 		if(board[x][y] != null){throw new IllegalStateException("Placing a piece on an occupied space.");}

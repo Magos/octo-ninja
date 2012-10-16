@@ -4,19 +4,26 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import octo_ninja.model.GameState;
 import octo_ninja.model.Move;
 import octo_ninja.model.Piece;
 
 public class RandomPlayer extends AbstractPlayer {
 	private Random random;
+	private static Logger logger = LoggerFactory.getLogger(RandomPlayer.class);
 
 	public RandomPlayer(){
 		random = new Random();
 	}
 
 	public static void main(String[] args) throws IOException{
-		new RandomPlayer().runGame();
+		try{new RandomPlayer().runGame();
+		}catch(Throwable e){
+			logger.warn("Problem running game.", e);
+		}
 	}
 
 	@Override
@@ -31,11 +38,11 @@ public class RandomPlayer extends AbstractPlayer {
 			}
 		}
 
-		int x = random.nextInt(3) + 1;
-		int y = random.nextInt(3) + 1;
+		int x = random.nextInt(4) + 1;
+		int y = random.nextInt(4) + 1;
 		while(state.getBoard().isOccupied(x,y)){
-			x = random.nextInt(3) + 1;
-			y = random.nextInt(3) + 1;
+			x = random.nextInt(4) + 1;
+			y = random.nextInt(4) + 1;
 		}
 
 		return new Move(chosenPiece, x, y);

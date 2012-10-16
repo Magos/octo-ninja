@@ -19,5 +19,10 @@ public class Move {
 	public int getY() {
 		return y;
 	}
+	
+	@Override
+	public String toString() {
+		return "[" + chosenPiece.toString() + "," + x + "," + y + "]";
+	}
 
 }

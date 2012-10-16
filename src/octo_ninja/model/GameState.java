@@ -32,4 +32,8 @@ public class GameState {
 		return pieces;
 	}
 
+	@Override
+	public String toString() {
+		return chosenPiece.toString() + pieces.toString();
+	}
 }
