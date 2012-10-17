@@ -108,7 +108,6 @@ public class BoardTest {
 			int x = (t % 4) + 1;
 			int y = (t / 4) + 1;
 			int[][] list = board.getUnoccupiedPositions();
-			System.out.println(x + " " + y + " " + list.toString());
 			boolean found = false;
 			for (int i = 0; i < list.length; i++) {
 				if(list[i][0] == x && list[i][1] == y){
