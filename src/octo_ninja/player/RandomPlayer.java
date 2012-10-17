@@ -12,12 +12,8 @@ import octo_ninja.model.Move;
 import octo_ninja.model.Piece;
 
 public class RandomPlayer extends TournamentPlayer {
-	private Random random;
+	private static Random random = new Random();
 	private static Logger logger = LoggerFactory.getLogger(RandomPlayer.class);
-
-	public RandomPlayer(){
-		random = new Random();
-	}
 
 	public static void main(String[] args) throws IOException{
 		try{new RandomPlayer().runGame();
@@ -28,6 +24,10 @@ public class RandomPlayer extends TournamentPlayer {
 
 	@Override
 	public Move chooseMove(GameState state) {
+		return getRandomMove(state);
+	}
+
+	public static Move getRandomMove(GameState state) {
 		Set<Piece> pieces = state.getPieces();
 		int index = random.nextInt(pieces.size());
 		Piece chosenPiece = null;
@@ -37,15 +37,9 @@ public class RandomPlayer extends TournamentPlayer {
 				break;
 			}
 		}
-
-		int x = random.nextInt(4) + 1;
-		int y = random.nextInt(4) + 1;
-		while(state.getBoard().isOccupied(x,y)){
-			x = random.nextInt(4) + 1;
-			y = random.nextInt(4) + 1;
-		}
-
-		return new Move(chosenPiece, x, y);
+		int[][] available = state.getBoard().getUnoccupiedPositions();
+		int[] chosen = available[random.nextInt(available.length)];
+		return new Move(chosenPiece, chosen[0], chosen[1]);
 	}
 
 	@Override
