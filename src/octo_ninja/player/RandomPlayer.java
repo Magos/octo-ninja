@@ -11,7 +11,7 @@ import octo_ninja.model.GameState;
 import octo_ninja.model.Move;
 import octo_ninja.model.Piece;
 
-public class RandomPlayer extends AbstractPlayer {
+public class RandomPlayer extends TournamentPlayer {
 	private Random random;
 	private static Logger logger = LoggerFactory.getLogger(RandomPlayer.class);
 

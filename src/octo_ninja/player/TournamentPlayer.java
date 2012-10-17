@@ -16,9 +16,9 @@ import octo_ninja.model.Piece;
 import octo_ninja.model.Player;
 
 /**An infrastructure for using a Player as a process which communicates its moves over STDIN/STDOUT. Intended for tournament use. */
-public abstract class AbstractPlayer implements Player {
+public abstract class TournamentPlayer implements Player {
 	private static final Pattern COORDINATES_PATTERN = Pattern.compile("[0123] [0123]");
-	private static Logger logger = LoggerFactory.getLogger(AbstractPlayer.class);
+	private static Logger logger = LoggerFactory.getLogger(TournamentPlayer.class);
 
 	protected void runGame(){
 
