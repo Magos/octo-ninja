@@ -153,4 +153,28 @@ public class Board {
 		if(x < 1 || x > 4 || y < 1 || y > 4) throw new IllegalArgumentException("Coordinates are between 1 and 4 inclusive.");
 		return board[x-1][y-1] != null;
 	}
+	
+	public int getUnoccupiedCount(){
+		int ret = 0;
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				ret += (board[i][j] == null ? 1 : 0);
+			}
+		}
+		return ret;
+	}
+	
+	public int[][] getUnoccupiedPositions(){
+		int[][] ret = new int[getUnoccupiedCount()][2];
+		int counter = 0;
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				if(board[i][j] != null) continue;
+				ret[counter][0] = i+1;
+				ret[counter][1] = j+1;
+				counter++;
+			}
+		}
+		return ret;
+	}
 }
