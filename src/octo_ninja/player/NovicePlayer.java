@@ -3,6 +3,7 @@ package octo_ninja.player;
 import octo_ninja.model.GameState;
 import octo_ninja.model.Move;
 
+/** A simple opponent with one-move lookahead.*/
 public class NovicePlayer extends TournamentPlayer {
 
 	@Override

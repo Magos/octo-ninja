@@ -34,6 +34,6 @@ public class GameState {
 
 	@Override
 	public String toString() {
-		return chosenPiece.toString() + pieces.toString();
+		return "Finished: " + board.isWon() + " Chosen piece:" + chosenPiece.toString() + " Available pieces:" + pieces.toString();
 	}
 }

@@ -55,8 +55,7 @@ public abstract class TournamentPlayer implements Player {
 			logger.trace("{} choosing move, state is {}.", hash, state);
 			Move move = chooseMove(state);
 			logger.trace("{} chose {}. Attempting to output.",hash, move);
-			output(move.getChosenPiece().toString());
-			output((move.getX()-1) + " " + (move.getY()-1)); //Subtract 1 because tournament uses 0-indexed X/Y
+			outputMove(move);
 			logger.trace("{} updating state, state is {}", hash,state);
 			state = applyMove(move, state);
 			logger.trace("{} trying to read opponent's move.",hash);
@@ -65,6 +64,8 @@ public abstract class TournamentPlayer implements Player {
 			state = applyMove(move, state);
 			logger.trace("{} finished updating after opponent's move, state is {}.", hash, state);
 		}
+		Move move = chooseMove(state);
+		outputMove(move);
 		try {
 			String last = readLine(reader);
 			if(last != null && last.equals("Victory")){
@@ -76,6 +77,11 @@ public abstract class TournamentPlayer implements Player {
 			logger.warn("Could not read final game master message.",e);
 		}
 
+	}
+
+	public void outputMove(Move move) {
+		output(move.getChosenPiece().toString());
+		output((move.getX()-1) + " " + (move.getY()-1)); //Subtract 1 because tournament uses 0-indexed X/Y
 	}
 
 	private GameState applyMove(Move move, GameState state) {
