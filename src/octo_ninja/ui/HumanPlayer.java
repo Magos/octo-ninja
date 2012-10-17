@@ -24,7 +24,7 @@ public class HumanPlayer implements Player {
 		System.out.println("Place this piece on the board: " + state.getChosenPiece());
 		System.out.println(state.getBoard().toString());
 		int x = -1, y = -1;
-		while(x == -1 && y == -1){
+		while(x == -1 || y == -1){
 			String input = readLine();
 			x = Integer.parseInt(input.substring(0,1));
 			if(x < 1 || x > 4) x = -1;
@@ -38,8 +38,13 @@ public class HumanPlayer implements Player {
 			System.out.print(i + ":" + pieces[i].toString() + " ");
 		}
 		System.out.println();
-		// TODO Auto-generated method stub
-		return null;
+		int chosen = -1;
+		while(chosen == -1){
+			String input = readLine();
+			x = Integer.parseInt(input.substring(0,1));
+			if(chosen < 0 || chosen >= pieces.length) chosen = -1;
+		}
+		return new Move(pieces[chosen], x, y);
 	}
 
 	private String readLine() {
