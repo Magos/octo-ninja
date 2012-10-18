@@ -5,15 +5,23 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Set;
 
+import octo_ninja.model.Game;
 import octo_ninja.model.GameState;
 import octo_ninja.model.Move;
 import octo_ninja.model.Piece;
 import octo_ninja.model.Player;
+import octo_ninja.player.RandomPlayer;
 
 /** A Player implementation that presents the progress of play on STDOUT and requests moves over STDIN, to be chosen by a (presumed) human. */
 public class HumanPlayer implements Player {
 	private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)); 
 
+	public static void main(String[] args) {
+		Game game = new Game(new HumanPlayer(),new RandomPlayer());
+		new Thread(game).start();
+		
+	}
+	
 	@Override
 	public void gameEnded(boolean victory) {
 		System.out.println(victory ? "You won!" : "You lost!");
@@ -41,7 +49,7 @@ public class HumanPlayer implements Player {
 		int chosen = -1;
 		while(chosen == -1){
 			String input = readLine();
-			x = Integer.parseInt(input.substring(0,1));
+			try{x = Integer.parseInt(input);}catch(NumberFormatException e){chosen = -1;}
 			if(chosen < 0 || chosen >= pieces.length) chosen = -1;
 		}
 		return new Move(pieces[chosen], x, y);

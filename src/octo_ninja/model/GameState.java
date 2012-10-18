@@ -36,4 +36,13 @@ public class GameState {
 	public String toString() {
 		return "Finished: " + board.isWon() + " Chosen piece:" + chosenPiece.toString() + " Available pieces:" + pieces.toString();
 	}
+	
+	public GameState applyMove(Move move) {
+		Piece placed = getChosenPiece();
+		Board board = getBoard();
+		board.placePiece(placed, move.getX(), move.getY());
+		Set<Piece> pieces = getPieces();
+		pieces.remove(move.getChosenPiece());
+		return new GameState(board, move.getChosenPiece(), null, pieces);
+	}
 }

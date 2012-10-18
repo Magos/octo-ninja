@@ -29,15 +29,18 @@ public class RandomPlayer extends TournamentPlayer {
 
 	public static Move getRandomMove(GameState state) {
 		Set<Piece> pieces = state.getPieces();
-		int index = random.nextInt(pieces.size());
 		Piece chosenPiece = null;
-		for (Piece piece : pieces) {
-			if(index-- == 0){
-				chosenPiece = piece;
-				break;
+		if(pieces.size() > 0){
+			int index = random.nextInt(pieces.size());
+			for (Piece piece : pieces) {
+				if(index-- == 0){
+					chosenPiece = piece;
+					break;
+				}
 			}
 		}
 		int[][] available = state.getBoard().getUnoccupiedPositions();
+		if(state.getBoard().getUnoccupiedCount() < 1){ logger.warn("Tried to get random move with no moves remaining"); return null;}
 		int[] chosen = available[random.nextInt(available.length)];
 		return new Move(chosenPiece, chosen[0], chosen[1]);
 	}

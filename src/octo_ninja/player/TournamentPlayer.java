@@ -33,39 +33,41 @@ public abstract class TournamentPlayer implements Player {
 		} catch (IOException e) {
 			logger.debug("IOException", e);
 		}
-		if(first.equalsIgnoreCase("Make first move.")){
+		if(first.equalsIgnoreCase(".")){
 			Move move = chooseMove(state);
 			Piece piece = move.getChosenPiece();
 			remainingPieces.remove(piece);
 			state = new GameState(board,piece,null,remainingPieces);
 			output(piece.toString());
 			move = getOpponentMove(reader);
-			state = applyMove(move, state);
+			state = state.applyMove(move);
 		}else{
 			Piece opponentsChoice = Piece.PieceFromString(first);
 			if(opponentsChoice == null){
 				throw new RuntimeException("Opponent chose invalid piece.");
 			}
 			remainingPieces.remove(opponentsChoice);
-			state = new GameState(board, opponentsChoice,this,remainingPieces);
+			state = new GameState(board, opponentsChoice,this,remainingPieces);			
 		}
 
-		while(!board.isWon()){
+		while(true){
 			int hash = hashCode();
 			logger.trace("{} choosing move, state is {}.", hash, state);
 			Move move = chooseMove(state);
 			logger.trace("{} chose {}. Attempting to output.",hash, move);
 			outputMove(move);
 			logger.trace("{} updating state, state is {}", hash,state);
-			state = applyMove(move, state);
+			state = state.applyMove(move);
+			if(state.getBoard().isWon() || state.getPieces().isEmpty()){break;}
 			logger.trace("{} trying to read opponent's move.",hash);
 			move = getOpponentMove(reader);
 			logger.trace("{} updating after opponent's move, state is {}.", hash, state);
-			state = applyMove(move, state);
+			state = state.applyMove(move);
 			logger.trace("{} finished updating after opponent's move, state is {}.", hash, state);
+			if(state.getBoard().isWon() || state.getPieces().isEmpty()){break;}
 		}
-		Move move = chooseMove(state);
-		outputMove(move);
+//		Move move = chooseMove(state);
+//		outputMove(move);
 		try {
 			String last = readLine(reader);
 			if(last != null && last.equals("Victory")){
@@ -80,25 +82,18 @@ public abstract class TournamentPlayer implements Player {
 	}
 
 	public void outputMove(Move move) {
-		output(move.getChosenPiece().toString());
 		output((move.getX()-1) + " " + (move.getY()-1)); //Subtract 1 because tournament uses 0-indexed X/Y
+		output(move.getChosenPiece().toString());
 	}
 
-	private GameState applyMove(Move move, GameState state) {
-		Piece placed = state.getChosenPiece();
-		Board board = state.getBoard();
-		board.placePiece(placed, move.getX(), move.getY());
-		Set<Piece> pieces = state.getPieces();
-		pieces.remove(move.getChosenPiece());
-		return new GameState(board, move.getChosenPiece(), null, pieces);
-	}
+	
 
 	private Move getOpponentMove(BufferedReader reader){
 		String pieceLine = null;
 		String coordinatesLine = null;
 		try{
-			pieceLine = readLine(reader);
 			coordinatesLine = readLine(reader);
+			pieceLine = readLine(reader);
 		}catch(IOException e){
 			logger.warn("IOException",e);
 		}
