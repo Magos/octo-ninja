@@ -25,7 +25,7 @@ public class Game implements Runnable {
 	public void run() {
 		Set<Piece> remainingPieces = Piece.getPieceSet();
 		Board board = new Board();
-		GameState state = new GameState(board, null, player1, remainingPieces);
+		GameState state = new GameState(board, null, remainingPieces);
 		int turn = 0;
 		while(true){
 			turn++;

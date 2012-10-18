@@ -5,19 +5,26 @@ import java.util.Set;
 public class GameState {
 	private Board board;
 	private Piece chosenPiece;
-	private Player next;
+	private int turn;
 	private Set<Piece> pieces;
 	
 
-	public GameState(Board board, Piece chosenPiece, Player next, Set<Piece> pieces){
+	public GameState(Board board, Piece chosenPiece, Set<Piece> pieces){
 		this.board = board;
 		this.chosenPiece = chosenPiece;
 		this.pieces = pieces;
-		this.next = next;
+		turn = (chosenPiece != null && pieces.size() == 15 ? 1 : 0);
 	}
 	
-	public Player getNext(){
-		return this.next;
+	private GameState(Board board, Piece chosenPiece, Set<Piece> pieces, int turn){
+		this.board = board;
+		this.chosenPiece = chosenPiece;
+		this.pieces = pieces;
+		this.turn = turn;
+	}
+	
+	public int getTurn(){
+		return turn;
 	}
 	
 	public Piece getChosenPiece() {
@@ -34,7 +41,7 @@ public class GameState {
 
 	@Override
 	public String toString() {
-		return "Finished: " + board.isWon() + " Chosen piece:" + chosenPiece.toString() + " Available pieces:" + pieces.toString();
+		return "Turn: " + turn + " Finished: " + board.isWon() + " Chosen piece:" + chosenPiece.toString() + " Available pieces:" + pieces.toString();
 	}
 	
 	public GameState applyMove(Move move) {
@@ -43,6 +50,6 @@ public class GameState {
 		board.placePiece(placed, move.getX(), move.getY());
 		Set<Piece> pieces = getPieces();
 		pieces.remove(move.getChosenPiece());
-		return new GameState(board, move.getChosenPiece(), null, pieces);
+		return new GameState(board, move.getChosenPiece(), pieces,turn+1);
 	}
 }
