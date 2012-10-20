@@ -51,28 +51,27 @@ public abstract class TournamentPlayer implements Player {
 			state = new GameState(board, opponentsChoice,remainingPieces);			
 		}
 
-		while(!state.getBoard().isWon() && !state.getPieces().isEmpty()){
+		while(state.getTurn() < 16 && !state.getBoard().isWon() && !state.getPieces().isEmpty()){
 			Move move = null;
-			int hash = hashCode();
-			if(state.getTurn() > 15){break;}
+			logger.trace("Player {} starting turn {}.",turn,state.getTurn());
 			if(state.getTurn() % 2 == turn){
-				logger.trace("{} choosing move, state is {}.", hash, state);
+				logger.trace("Player {} choosing move, state is {}.", turn, state);
 				move = chooseMove(state); 
-				logger.trace("{} chose {}. Attempting to output.",hash, move);
+				logger.trace("Player {} chose {}. Attempting to output.",turn, move);
 				outputMove(move);
 			}else{
-				logger.trace("{} trying to read opponent's move.",hash);
+				logger.trace("Player {} trying to read opponent's move.",turn);
 				move = getOpponentMove(reader);				
 			}
-			logger.trace("{} updating state, state is {}", hash,state);
+			logger.trace("Player {} updating state, state is {}", turn,state);
 			state = state.applyMove(move);
-			logger.trace("{} finished updating after move, state is {}.", hash, state);
+			logger.trace("Player {} finished updating after move, state is {}.", turn, state);
 		}
-		logger.trace("Exited primary loop. Positions count is {}",state.getBoard().getUnoccupiedCount());
-		if(state.getPieces().isEmpty() && state.getBoard().getUnoccupiedCount() == 1){ //Make sure we output our last move even when we can't do anything else.
-			logger.trace("{} outputting final move.", hashCode());
+		if(turn == 0 && state.getPieces().isEmpty() && state.getBoard().getUnoccupiedCount() == 1){ //Make sure we output our last move even when we can't do anything else.
+			logger.trace("Player {} outputting final move.", turn);
 			int[] position = state.getBoard().getUnoccupiedPositions()[0];
-			output((position[0]-1) + " " + (position[1]-1));		
+			output((position[0]-1) + " " + (position[1]-1));
+			output(null);
 		}
 		
 		try {
@@ -118,12 +117,12 @@ public abstract class TournamentPlayer implements Player {
 
 	private String readLine(BufferedReader reader) throws IOException {
 		String ret = reader.readLine();
-		logger.trace("Player {} received: {}", hashCode(),ret);
+		logger.trace("Player {} received: {}", turn,ret);
 		return ret;
 	}
 
 	private void output(String s){
-		logger.trace("Player {} output: {}",hashCode(),s);
+		logger.trace("Player {} output: {}",turn,s);
 		System.out.println(s);
 	}
 
