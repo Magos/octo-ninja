@@ -3,7 +3,6 @@ package octo_ninja.ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Set;
 
 import octo_ninja.model.Game;
 import octo_ninja.model.GameState;
@@ -29,17 +28,20 @@ public class HumanPlayer implements Player {
 
 	@Override
 	public Move chooseMove(GameState state) {
-		System.out.println("Place this piece on the board: " + state.getChosenPiece());
-		System.out.println(state.getBoard().toString());
 		int x = -1, y = -1;
-		while(x == -1 || y == -1){
-			String input = readLine();
-			x = Integer.parseInt(input.substring(0,1));
-			if(x < 1 || x > 4) x = -1;
-			y = Integer.parseInt(input.substring(2,3));
-			if(y < 1 || y > 4) y = -1;
+		if(state.getTurn() != 0){			
+			System.out.println("Place this piece on the board: " + state.getChosenPiece());
+			System.out.println(state.getBoard().toString());
+			while(x == -1 || y == -1){
+				String input = readLine();
+				x = Integer.parseInt(input.substring(0,1));
+				if(x < 1 || x > 4) x = -1;
+				y = Integer.parseInt(input.substring(2,3));
+				if(y < 1 || y > 4) y = -1;
+			}
 		}
-		Piece[] pieces =(Piece[]) state.getPieces().toArray();
+		System.out.println(state.getPieces().toArray(new Piece[0]).getClass());
+		Piece[] pieces =(Piece[]) state.getPieces().toArray(new Piece[0]);
 		System.out.println("Choose a piece for your opponent.");
 		System.out.println("Available pieces are: ");
 		for (int i = 0; i < pieces.length; i++) {
@@ -49,9 +51,10 @@ public class HumanPlayer implements Player {
 		int chosen = -1;
 		while(chosen == -1){
 			String input = readLine();
-			try{x = Integer.parseInt(input);}catch(NumberFormatException e){chosen = -1;}
+			try{chosen = Integer.parseInt(input);}catch(NumberFormatException e){chosen = -1;}
 			if(chosen < 0 || chosen >= pieces.length) chosen = -1;
 		}
+		System.out.println("You chose " + pieces[chosen].toString());
 		return new Move(pieces[chosen], x, y);
 	}
 

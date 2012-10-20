@@ -177,4 +177,8 @@ public class Board {
 		}
 		return ret;
 	}
+
+	public Piece getPiece(int i, int j) {
+		return board[i-1][j-1];
+	}
 }

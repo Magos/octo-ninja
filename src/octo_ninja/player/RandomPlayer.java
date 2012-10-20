@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import octo_ninja.model.GameState;
 import octo_ninja.model.Move;
 import octo_ninja.model.Piece;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RandomPlayer extends TournamentPlayer {
 	private static Random random = new Random();

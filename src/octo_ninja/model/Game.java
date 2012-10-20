@@ -2,16 +2,17 @@ package octo_ninja.model;
 
 import java.util.Set;
 
+import octo_ninja.player.RandomPlayer;
+import octo_ninja.ui.HumanPlayer;
+
 
 public class Game implements Runnable {
 	private Result result = null;
 	
-	private Player player1, player2;
+
 	private Player[] players = new Player[2]; 
 	
 	public Game(Player player1, Player player2){
-		this.player1 = player1;
-		this.player2 = player2;
 		players[0] = player1;
 		players[1] = player2;
 	}
@@ -41,6 +42,11 @@ public class Game implements Runnable {
 	}
 	public Result getResult() {
 		return result;
+	}
+	
+	public static void main(String[] args) {
+		Game game = new Game(new RandomPlayer(),new HumanPlayer());
+		new Thread(game).start();
 	}
 
 }

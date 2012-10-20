@@ -6,14 +6,14 @@ import java.io.InputStreamReader;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import octo_ninja.model.Board;
 import octo_ninja.model.GameState;
 import octo_ninja.model.Move;
 import octo_ninja.model.Piece;
 import octo_ninja.model.Player;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**An infrastructure for using a Player as a process which communicates its moves over STDIN/STDOUT. Intended for tournament use. */
 public abstract class TournamentPlayer implements Player {
