@@ -1,13 +1,13 @@
 package octo_ninja.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
-public class GameState {
+public class GameState implements Cloneable{
 	private Board board;
 	private Piece chosenPiece;
 	private int turn;
 	private Set<Piece> pieces;
-
 
 	public GameState(Board board, Piece chosenPiece, Set<Piece> pieces){
 		this.board = board;
@@ -45,13 +45,22 @@ public class GameState {
 	}
 
 	public GameState applyMove(Move move) {
-		if(turn > 0){
+		if(turn > 0 && turn < 16){
 			Piece placed = getChosenPiece();
 			Board board = getBoard();
 			board.placePiece(placed, move.getX(), move.getY());
 		}
 		Set<Piece> pieces = getPieces();
-		pieces.remove(move.getChosenPiece());
-		return new GameState(board, move.getChosenPiece(), pieces,turn+1);
+		Set<Piece> next = new HashSet<Piece>(pieces);
+		next.remove(move.getChosenPiece());
+		return new GameState(board, move.getChosenPiece(), next,turn+1);
+	}
+	
+	
+	public GameState clone() throws CloneNotSupportedException {
+		GameState ret = (GameState) super.clone();
+		ret.board = board.clone();
+		ret.pieces = new HashSet<Piece>(pieces);
+		return ret;
 	}
 }

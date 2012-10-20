@@ -28,7 +28,7 @@ public class Game implements Runnable {
 		Board board = new Board();
 		GameState state = new GameState(board, null, remainingPieces);
 		int turn = 0;
-		while(true){
+		while(turn < 17){
 			turn++;
 			Move move =players[turn % 2].chooseMove(state);
 			state = state.applyMove(move);

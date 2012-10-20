@@ -2,7 +2,7 @@ package octo_ninja.model;
 
 import octo_ninja.model.Piece.Feature;
 
-public class Board {
+public class Board implements Cloneable{
 	private Piece[][] board;
 
 	public Board(Board original){
@@ -180,5 +180,11 @@ public class Board {
 
 	public Piece getPiece(int i, int j) {
 		return board[i-1][j-1];
+	}
+	
+	@Override
+	protected Board clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return (Board) super.clone();
 	}
 }

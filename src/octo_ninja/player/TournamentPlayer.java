@@ -87,7 +87,7 @@ public abstract class TournamentPlayer implements Player {
 
 	}
 
-	public void outputMove(Move move) {
+	private void outputMove(Move move) {
 		output((move.getX()-1) + " " + (move.getY()-1)); //Subtract 1 because tournament uses 0-indexed X/Y
 		output(move.getChosenPiece().toString());
 	}
