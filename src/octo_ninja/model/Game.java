@@ -19,7 +19,7 @@ public class Game implements Runnable {
 		players[1] = player2;
 	}
 	
-	enum Result{
+	public enum Result{
 		PLAYER_1,
 		PLAYER_2,
 		TIE;

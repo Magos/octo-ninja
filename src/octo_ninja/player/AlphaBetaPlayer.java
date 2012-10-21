@@ -7,7 +7,7 @@ import octo_ninja.model.Piece;
 /** A framework Player using minimax with alpha-beta pruning, with a pluggable state estimator.*/
 public abstract class AlphaBetaPlayer extends TournamentPlayer {
 	private static final int RANDOM_CUTOFF = 6;
-	int firstTurn = -1;
+	protected int firstTurn = -1;
 	private int plyDepth = 3;
 
 	@Override
