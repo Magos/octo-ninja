@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 public abstract class TournamentPlayer implements Player {
 	private static final Pattern COORDINATES_PATTERN = Pattern.compile("[0123] [0123]");
 	private static Logger logger = LoggerFactory.getLogger(TournamentPlayer.class);
-	private int turn;
+	protected int turn;
 
 	protected void runGame(){
 
