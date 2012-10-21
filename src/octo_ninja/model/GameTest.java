@@ -1,5 +1,6 @@
 package octo_ninja.model;
 
+import octo_ninja.player.RandomEstimator;
 import octo_ninja.player.RandomPlayer;
 
 import org.junit.Test;
@@ -13,5 +14,11 @@ public class GameTest {
 		game.run();
 		System.out.println(game.getResult());
 	}
-
+	
+	@Test
+	public void testAlphaBeta() {
+		Game game = new Game(new RandomPlayer(), new RandomEstimator());
+		game.run();
+		System.out.println(game.getResult());
+	}
 }

@@ -32,35 +32,45 @@ public class GameState implements Cloneable{
 	}
 
 	public Board getBoard() {
-		return board;
+		try {
+			return board.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}catch (NullPointerException e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public Set<Piece> getPieces() {
 		return pieces;
 	}
+	
+	public boolean isWon(){
+		return board.isWon();
+	}
 
 	@Override
 	public String toString() {
-		return "Turn: " + turn + " Finished: " + board.isWon() + " Chosen piece:" + chosenPiece.toString() + " Available pieces:" + pieces.toString();
+		return "Turn: " + turn + " Finished: " + isWon() + " Chosen piece:" + chosenPiece.toString() + " Available pieces:" + pieces.toString();
 	}
 
 	public GameState applyMove(Move move) {
+		if(move== null){
+			return this;//The result of no move is the same state..?
+		}
+		Board nextBoard = null;
 		if(turn > 0 && turn < 16){
 			Piece placed = getChosenPiece();
-			Board board = getBoard();
-			board.placePiece(placed, move.getX(), move.getY());
+			nextBoard = getBoard();
+			nextBoard.placePiece(placed, move.getX(), move.getY());
+		}else{
+			nextBoard = this.board;
 		}
 		Set<Piece> pieces = getPieces();
 		Set<Piece> next = new HashSet<Piece>(pieces);
 		next.remove(move.getChosenPiece());
-		return new GameState(board, move.getChosenPiece(), next,turn+1);
+		return new GameState(nextBoard, move.getChosenPiece(), next,turn+1);
 	}
-	
-	
-	public GameState clone() throws CloneNotSupportedException {
-		GameState ret = (GameState) super.clone();
-		ret.board = board.clone();
-		ret.pieces = new HashSet<Piece>(pieces);
-		return ret;
-	}
+
 }

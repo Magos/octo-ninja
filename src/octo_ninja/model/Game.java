@@ -29,15 +29,15 @@ public class Game implements Runnable {
 		GameState state = new GameState(board, null, remainingPieces);
 		int turn = 0;
 		while(turn < 17){
-			turn++;
 			Move move =players[turn % 2].chooseMove(state);
 			state = state.applyMove(move);
-			if(state.getBoard().isWon()){
+			if(state.isWon()){
 				result = (turn % 2 == 0 ? Result.PLAYER_1 : Result.PLAYER_2);
 			}
 			if(state.getPieces().size() == 0){
 				result = Result.TIE;
 			}
+			turn++;
 		}
 	}
 	public Result getResult() {

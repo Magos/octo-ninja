@@ -20,6 +20,10 @@ public class Board implements Cloneable{
 		board = new Piece[4][4];
 	}
 
+	private Board(Piece[][] newBoard) {
+		board = newBoard;
+	}
+
 	/** Places a piece on the board and returns whether or not this move won the player the game. X and Y indexes are between 1 and 4 inclusive.*/
 	public boolean placePiece(Piece piece, int x, int y) throws IllegalStateException, IllegalArgumentException{
 		if(x < 1 || x > 4){throw new IllegalArgumentException("Illegal X argument :" + x);}
@@ -184,7 +188,12 @@ public class Board implements Cloneable{
 	
 	@Override
 	protected Board clone() throws CloneNotSupportedException {
-		// TODO Auto-generated method stub
-		return (Board) super.clone();
+		Piece[][] newBoard = new Piece[4][4];
+		for (int i = 0; i < newBoard.length; i++) {
+			for (int j = 0; j < newBoard.length; j++) {
+				newBoard[i][j] = board[i][j];
+			}
+		}
+		return new Board(newBoard);
 	}
 }

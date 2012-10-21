@@ -6,15 +6,15 @@ import octo_ninja.model.Piece;
 
 /** A framework Player using minimax with alpha-beta pruning, with a pluggable state estimator.*/
 public abstract class AlphaBetaPlayer extends TournamentPlayer {
+	private static final int RANDOM_CUTOFF = 6;
 	int firstTurn = -1;
 	private int plyDepth = 3;
 
 	@Override
 	public Move chooseMove(GameState state) {
-		if(state.getChosenPiece() == null && state.getTurn() == 0){
-			firstTurn = 0;
-		}else{
-			firstTurn = 1;
+		firstTurn = state.getTurn() % 2;
+		if(state.getTurn() < RANDOM_CUTOFF){
+			return RandomPlayer.getRandomMove(state);
 		}
 		Node start = new Node(state);
 		start.getEstimate();
@@ -44,12 +44,7 @@ public abstract class AlphaBetaPlayer extends TournamentPlayer {
 		/** Constructor for the first node of a tree. */
 		Node(GameState state){
 			this.type = NodeType.MAX;
-			try {
-				this.state = state.clone();
-			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			this.state = state;
 			this.alpha = Double.NEGATIVE_INFINITY;
 			this.beta = Double.POSITIVE_INFINITY;
 			this.depth = 0;
@@ -57,12 +52,7 @@ public abstract class AlphaBetaPlayer extends TournamentPlayer {
 
 		Node(GameState state, NodeType type, double alpha, double beta, int depth){
 			this.type = type;
-			try {
-				this.state = state.clone();
-			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			this.state = state;
 			this.alpha = alpha;
 			this.beta = beta;
 			this.depth = depth;
@@ -70,12 +60,16 @@ public abstract class AlphaBetaPlayer extends TournamentPlayer {
 
 
 		public Move getBestMove(){
+			if(bestMove == null){
+				int options = state.getBoard().getUnoccupiedCount() * state.getPieces().size();
+				System.out.println("My best move is null, out of " + options + " options. Game is finished:"  + state.isWon());
+			}
 			return bestMove;
 		}
 
 		public double getEstimate(){
 			//Check if we are a final board state.
-			if(state.getBoard().isWon()){
+			if(state.isWon()){
 				if(state.getTurn() % 2 == firstTurn){
 					return VICTORY_UTILITY;
 				}else{
@@ -86,24 +80,18 @@ public abstract class AlphaBetaPlayer extends TournamentPlayer {
 				return TIE_UTILITY;
 			}
 			//Are we allowed more lookahead than this?
-			if(depth > plyDepth*2){ //1 ply contains 2 nodes.
+			if(depth > plyDepth){ //1 ply contains 2 nodes.
 				//If not, use heuristic state evaluator.
 				return AlphaBetaPlayer.this.getEstimate(state);
 			}else{
 				//If we are, generate child nodes and recursively call them.
 				int[][] availablePositions = state.getBoard().getUnoccupiedPositions();
 				Piece[] piecesToChooseFrom = state.getPieces().toArray(new Piece[0]);
-				double result = Double.NEGATIVE_INFINITY;
+				double result = (type == NodeType.MAX ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY);
 				for (int i = 0; i < availablePositions.length; i++) {
 					for (int j = 0; j < piecesToChooseFrom.length; j++) {
 						Move move = new Move(piecesToChooseFrom[j], availablePositions[i][0], availablePositions[i][1]);
-						GameState childState = state;
-						try {
-							childState = state.clone().applyMove(move);
-						} catch (CloneNotSupportedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+						GameState childState = state.applyMove(move);
 						Node child = new Node(childState, (type == NodeType.MAX ? NodeType.MIN : NodeType.MAX), alpha, beta, depth+1);
 						double childEstimate = child.getEstimate();
 						switch(type){
