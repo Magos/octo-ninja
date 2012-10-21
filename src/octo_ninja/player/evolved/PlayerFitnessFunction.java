@@ -1,13 +1,13 @@
 package octo_ninja.player.evolved;
 
+import octo_ninja.model.Game;
+import octo_ninja.model.Player;
+import octo_ninja.player.RandomEstimator;
+import ojc.ahni.hyperneat.HyperNEATFitnessFunction;
+
 import org.jgapcustomised.Chromosome;
 
 import com.anji.integration.Activator;
-
-import octo_ninja.model.Game;
-import octo_ninja.model.Player;
-import octo_ninja.player.RandomPlayer;
-import ojc.ahni.hyperneat.HyperNEATFitnessFunction;
 
 /** A fitness function for evaluating neural nets as state evaluators in Quarto. It does this by playing a series of games with them and counting victories.  */
 public class PlayerFitnessFunction extends HyperNEATFitnessFunction {
@@ -23,7 +23,7 @@ public class PlayerFitnessFunction extends HyperNEATFitnessFunction {
 	protected int evaluate(Chromosome genotype, Activator substrate,
 			int evalThreadIndex) {
 		Player player = new ANNPlayer(substrate);
-		Player opponent = new RandomPlayer();
+		Player opponent = new RandomEstimator();
 		int wins = 0;
 		for (int i = 0; i < runs; i++) {
 			Game game = new Game(player, opponent);
