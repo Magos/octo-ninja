@@ -31,10 +31,11 @@ public class ANNPlayer extends AlphaBetaPlayer {
 	private double[][] convertToANNInput(GameState state) {
 		double[][] ret = new double[5][4];//Board is 4x4, plus turn input and two spares.
 		Board board = state.getBoard();
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
+		for (int i = 0; i <= 3; i++) {
+			for (int j = 0; j <= 3; j++) {
 				Piece piece = board.getPiece(i+1, j+1); 
-				ret[i][j] = (piece == null ? -1 : piece.hashCode());
+				double[] row = ret[i];
+				row[j] = (piece == null ? -1 : piece.hashCode());
 			}
 		}
 		ret[4][0] = (state.getTurn() % 2 == firstTurn ? 1 : 0);
