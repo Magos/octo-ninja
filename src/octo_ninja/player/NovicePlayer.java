@@ -1,7 +1,9 @@
 package octo_ninja.player;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import octo_ninja.model.Board;
 import octo_ninja.model.GameState;
@@ -19,85 +21,41 @@ public class NovicePlayer extends TournamentPlayer {
 		//Identify whether we can place the chosen piece to win this move.
 		Piece placeable = state.getChosenPiece();
 		Board board = state.getBoard();
-		List<int[]> winPositions = findMatches(placeable,board);
-		//Identify a piece that won't give our opponent a win next move, if any.
-		Piece[] pieces = (Piece[]) state.getPieces().toArray();
+		int[] winningPosition = null;
+		for(int[] position : board.getUnoccupiedPositions()){
+			Board temp = state.getBoard();
+			if(temp.placePiece(placeable, position[0], position[1])){
+				winningPosition = position;
+				board = temp;
+			}
+		}
 		Piece chosen = null;
-		while(chosen == null){
-			
-		}
-		return null;
-	}
-
-	private List<int[]> findMatches(Piece placeable, Board board) {
-		List<int[]> ret = new ArrayList<int[]>();
-		for(Piece.Feature feature : Piece.Feature.values()){
-			boolean wantedValue = placeable.possessesFeature(feature);
-			int counter;
-			int nullX = -1,nullY = -1;
-			//Check rows
-			for (int i = 1; i < 5; i++) {
-				counter = 0;
-				for (int j = 1; j < 5; j++) {
-					Piece piece = board.getPiece(i,j);
-					if(piece != null && piece.possessesFeature( feature) == wantedValue){
-						counter++;
-					}else if(piece == null){
-						nullX = i;
-						nullY = j;
+		Set<Piece> available = state.getPieces();
+		Iterator<Piece> it = available.iterator();
+		while(chosen == null && it.hasNext()){
+			Piece considered = it.next();
+			//Check whether an instant win placement exists for the opponent.
+			try {
+				for(int[] position : board.getUnoccupiedPositions()){					
+					Board temp = board.clone();	
+					if(temp.placePiece(considered, position[0], position[1])){
+						break;
 					}
+					chosen = considered;
 				}
-				if(counter == 3){
-					ret.add(new int[]{nullX,nullY});
-				}
-			}
-			//Check columns
-			for (int j = 1; j < 5; j++) {
-				counter = 0;
-				for (int i = 1; i < 5; i++) {
-					Piece piece = board.getPiece(i,j);
-					if(piece != null && piece.possessesFeature( feature) == wantedValue){
-						counter++;
-					}else if(piece == null){
-						nullX = i;
-						nullY = j;
-					}
-				}
-				if(counter == 3){
-					ret.add(new int[]{nullX,nullY});
-				}
-			}
-			//Check bottom left to top right
-			counter = 0;
-			for (int i = 1; i < 5; i++) {
-				Piece piece = board.getPiece(i,i);
-				if(piece != null && piece.possessesFeature( feature) == wantedValue){
-					counter++;
-				}else if(piece == null){
-					nullX = i;
-					nullY = i;
-				}
-			}
-			if(counter == 3){
-				ret.add(new int[]{nullX,nullY});
-			}
-
-			//Check top left to bottom right
-			counter = 0;
-			for (int i = 1; i < 5; i++) {
-				Piece piece = board.getPiece(i,5-i);
-				if(piece != null && piece.possessesFeature( feature) == wantedValue){
-					counter++;
-				}else if(piece == null){
-					nullX = i;
-					nullY = 5-i;
-				}
-			}
-			if(counter == 3){
-				ret.add(new int[]{nullX,nullY});
+			} catch (CloneNotSupportedException e) {
+				e.printStackTrace();
 			}
 		}
-		return ret;
+		if(winningPosition != null){
+			Move ret = new Move((chosen == null ? available.iterator().next() : chosen), winningPosition[0], winningPosition[1]);
+			return ret;
+		}else if(chosen != null){
+			Move ret = RandomPlayer.getRandomMove(state);
+			ret = new Move(chosen,ret.getX(),ret.getY());
+			return ret;
+		}
+		return RandomPlayer.getRandomMove(state);
 	}
 
 	@Override

@@ -1,11 +1,17 @@
 package octo_ninja.player.evolved;
 
-import com.anji.integration.Activator;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import octo_ninja.model.Board;
 import octo_ninja.model.GameState;
 import octo_ninja.model.Piece;
 import octo_ninja.player.AlphaBetaPlayer;
+
+import com.anji.integration.Activator;
 
 /** An alpha-beta player that uses a provided ANN to inform its state estimates. */
 public class ANNPlayer extends AlphaBetaPlayer {
@@ -15,6 +21,18 @@ public class ANNPlayer extends AlphaBetaPlayer {
 	public ANNPlayer(Activator activator){
 		this.activator = activator;
 	}
+	
+	public ANNPlayer(File file) throws FileNotFoundException, IOException{
+		ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file));
+		Activator activator = null;
+		try {
+			activator = (Activator) stream.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		this.activator = activator;
+	}
+	
 	
 	@Override
 	public void gameEnded(boolean victory) {

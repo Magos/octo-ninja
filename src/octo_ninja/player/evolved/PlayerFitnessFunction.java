@@ -25,12 +25,14 @@ public class PlayerFitnessFunction extends HyperNEATFitnessFunction {
 		Player player = new ANNPlayer(substrate);
 		Player opponent = new RandomEstimator();
 		int wins = 0;
+		int ties = 0;
 		for (int i = 0; i < runs; i++) {
 			Game game = new Game(player, opponent);
 			game.run();
 			if(game.getResult() == Game.Result.PLAYER_1) wins++;
+			if(game.getResult() == Game.Result.TIE) ties++;
 		}
-		return wins;
+		return wins + (ties/2);
 	}
 
 }
