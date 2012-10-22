@@ -43,7 +43,7 @@ public class GameState implements Cloneable{
 	}
 
 	public Set<Piece> getPieces() {
-		return pieces;
+		return new HashSet<Piece>(pieces);
 	}
 	
 	public boolean isWon(){

@@ -187,7 +187,7 @@ public class Board implements Cloneable{
 	}
 	
 	@Override
-	protected Board clone() throws CloneNotSupportedException {
+	public Board clone() throws CloneNotSupportedException {
 		Piece[][] newBoard = new Piece[4][4];
 		for (int i = 0; i < newBoard.length; i++) {
 			for (int j = 0; j < newBoard.length; j++) {
