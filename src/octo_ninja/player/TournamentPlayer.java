@@ -21,7 +21,7 @@ public abstract class TournamentPlayer implements Player {
 	private static Logger logger = LoggerFactory.getLogger(TournamentPlayer.class);
 	protected int turn;
 
-	protected void runGame(){
+	public void runGame(){
 
 		Board board = new Board();
 		Set<Piece> remainingPieces = Piece.getPieceSet();

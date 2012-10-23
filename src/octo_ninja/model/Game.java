@@ -45,54 +45,5 @@ public class Game implements Runnable {
 	public Result getResult() {
 		return result;
 	}
-	
-	public static void main(String[] args) {
-		Player player1 = null;
-		Class<Player> ply1Class = null;
-		try {
-			 ply1Class = (Class<Player>) Class.forName(args[0]);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		try {
-			player1 = ply1Class.newInstance();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		
-		Player player2 = null;
-		Class<Player> ply2Class = null;
-		
-		try {
-			 ply2Class = (Class<Player>) Class.forName(args[1]);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		try {
-			player2 = ply2Class.newInstance();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		int n = 100;
-		
-		if(args[3] != null && args[3].equalsIgnoreCase("-n")){
-			n = Integer.parseInt(args[4]);
-		}
-		Map<Result,Integer> results = new HashMap<Result,Integer>();
-		for (Result res : Result.values()) {
-			results.put(res, 0);
-		}
-		for (int i = 0; i < n; i++) {
-			Game game = new Game(player1, player2);
-			game.run();
-			Result res = game.getResult();
-			results.put(res, results.get(res)+1);
-		}
-		System.out.println(results);
-	}
 
 }
