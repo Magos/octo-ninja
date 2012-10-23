@@ -1,13 +1,10 @@
 package octo_ninja.model;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import octo_ninja.model.Game.Result;
 import octo_ninja.player.NovicePlayer;
 import octo_ninja.player.RandomEstimator;
 import octo_ninja.player.RandomPlayer;

@@ -1,11 +1,6 @@
 package octo_ninja.model;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-
-import octo_ninja.player.RandomPlayer;
-import octo_ninja.ui.HumanPlayer;
 
 
 public class Game implements Runnable {

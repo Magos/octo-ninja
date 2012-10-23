@@ -1,8 +1,6 @@
 package octo_ninja.player;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import octo_ninja.model.Board;

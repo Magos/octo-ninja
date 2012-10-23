@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,8 +7,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import octo_ninja.model.Game;
-import octo_ninja.model.Player;
 import octo_ninja.model.Game.Result;
+import octo_ninja.model.Player;
 import octo_ninja.player.NovicePlayer;
 import octo_ninja.player.RandomPlayer;
 import octo_ninja.player.TournamentPlayer;
@@ -79,6 +78,7 @@ public class Main {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private static Player getPlayer(String string) {
 		Player ret = null;
 		if("RandomPlayer".equalsIgnoreCase(string)){
