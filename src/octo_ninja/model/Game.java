@@ -30,9 +30,13 @@ public class Game implements Runnable {
 			state = state.applyMove(move);
 			if(state.isWon()){
 				result = (turn % 2 == 0 ? Result.PLAYER_1 : Result.PLAYER_2);
+				players[turn % 2].gameEnded(true);
+				players[(turn+1) % 2].gameEnded(false);
 			}
 			if(state.getPieces().size() == 0){
 				result = Result.TIE;
+				players[0].gameEnded(false);
+				players[1].gameEnded(false);
 			}
 			turn++;
 		}

@@ -13,6 +13,7 @@ import octo_ninja.player.NovicePlayer;
 import octo_ninja.player.RandomPlayer;
 import octo_ninja.player.TournamentPlayer;
 import octo_ninja.player.evolved.ANNPlayer;
+import octo_ninja.ui.HumanPlayer;
 
 
 /** An entry point class which gives access to the various tournament players, and runs games. */
@@ -92,6 +93,8 @@ public class Main {
 				System.err.println("Failed to load ANN for ANNPlayer.");
 				e.printStackTrace();
 			}
+		}else if("HumanPlayer".equalsIgnoreCase(string)){
+			ret = new HumanPlayer();
 		}else{
 			try {
 				Class<Player> plyClass = (Class<Player>) Class.forName(string);

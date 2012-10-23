@@ -25,11 +25,12 @@ public class HumanPlayer implements Player {
 
 	@Override
 	public void gameEnded(boolean victory) {
-		System.out.println(victory ? "You won!" : "You lost!");
+		System.out.println(victory ? "You won!" : "You didn't win.");
 	}
 
 	@Override
 	public Move chooseMove(GameState state) {
+		System.out.println("Player " + ((state.getTurn() % 2 )+1));
 		int x = -1, y = -1;
 		if(state.getTurn() != 0){			
 			System.out.println("Place this piece on the board: " + state.getChosenPiece());
