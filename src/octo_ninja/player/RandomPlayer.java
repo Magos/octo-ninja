@@ -47,7 +47,7 @@ public class RandomPlayer extends TournamentPlayer {
 
 	@Override
 	public void gameEnded(boolean victory) {
-		System.out.println("A WINRAR IS ME!");
+		//Do nothing.
 	}
 
 }

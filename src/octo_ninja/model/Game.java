@@ -5,6 +5,7 @@ import java.util.Set;
 
 public class Game implements Runnable {
 	private Result result = null;
+	private boolean verbose = false;
 	
 
 	private Player[] players = new Player[2]; 
@@ -12,6 +13,12 @@ public class Game implements Runnable {
 	public Game(Player player1, Player player2){
 		players[0] = player1;
 		players[1] = player2;
+	}
+	
+	public Game(Player player1, Player player2, boolean verbose){
+		players[0] = player1;
+		players[1] = player2;
+		this.verbose = verbose;
 	}
 	
 	public enum Result{
@@ -37,6 +44,9 @@ public class Game implements Runnable {
 				result = Result.TIE;
 				players[0].gameEnded(false);
 				players[1].gameEnded(false);
+			}
+			if(verbose){
+				System.out.println(state.getBoard());
 			}
 			turn++;
 		}

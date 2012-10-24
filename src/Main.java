@@ -53,10 +53,17 @@ public class Main {
 			for (Result res : Result.values()) {
 				results.put(res, 0);
 			}
+			boolean verbose = false;
+			if((!numberSpecified &&args.length > 3)  || (numberSpecified && args.length > 4)){
+				String verb = args[(numberSpecified ? 4 : 3)];
+				if("-v".equalsIgnoreCase(verb)){
+					verbose = true;
+				}
+			}
 			Game[] games = new Game[n];
 			ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 			for (int i = 0; i < n; i++) {
-				Game game = new Game(player1, player2);
+				Game game = new Game(player1, player2,verbose);
 				games[i] = game;
 				pool.execute(game);
 			}
@@ -93,6 +100,19 @@ public class Main {
 				System.err.println("Failed to load ANN for ANNPlayer.");
 				e.printStackTrace();
 			}
+		}else if("ANNPlayer".equalsIgnoreCase(string.substring(0,string.length()-1))){
+			int n = 3;
+			try{n = Integer.parseInt(string.substring(string.length()-1));}
+			catch(NumberFormatException e){
+				System.err.println("Couldn't understand plydepth specified." );
+				e.printStackTrace();
+			}
+			try {
+				ret = new ANNPlayer(new File("champion.activator"), n);
+			} catch (IOException e) {
+				System.err.println("Failed to load ANN for ANNPlayer.");
+				e.printStackTrace();
+			}
 		}else if("HumanPlayer".equalsIgnoreCase(string)){
 			ret = new HumanPlayer();
 		}else{
@@ -111,7 +131,8 @@ public class Main {
 	private static void usage() {
 		System.out.println("Usage:");
 		System.out.println("-t <Player> runs the indicated player in tournament mode. ");
-		System.out.println("-g (<Natural number>) <Player> <Player> runs one or optionally more games between the indicated players and shows the results.");
+		System.out.println("-g (<Natural number>) <Player> <Player> (-v) runs one or optionally more games between the indicated players and shows the results.");
+		System.out.println("-v will make the game simulator run verbosely, outputting the board state after every move.");
 		System.out.println("Use HumanPlayer to play interactively. It does not support tournament mode.");
 	}
 

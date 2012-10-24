@@ -9,6 +9,14 @@ public abstract class AlphaBetaPlayer extends TournamentPlayer {
 	private static final int RANDOM_CUTOFF = 6;
 	protected int firstTurn = -1;
 	private int plyDepth = 3;
+	
+	protected AlphaBetaPlayer(){
+		
+	}
+	
+	protected AlphaBetaPlayer(int plyDepth){
+		this.plyDepth = plyDepth;
+	}
 
 	@Override
 	public Move chooseMove(GameState state) {

@@ -33,6 +33,17 @@ public class ANNPlayer extends AlphaBetaPlayer {
 		this.activator = activator;
 	}
 	
+	public ANNPlayer(File file, int plyDepth) throws FileNotFoundException, IOException{
+		super(plyDepth);
+		ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file));
+		Activator activator = null;
+		try {
+			activator = (Activator) stream.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		this.activator = activator;
+	}
 	
 	@Override
 	public void gameEnded(boolean victory) {
